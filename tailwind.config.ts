@@ -18,6 +18,9 @@ const config: Config = {
           950: "#02105B",
         },
       },
+      margin: {
+        "33": "129px",
+      },
     },
   },
   plugins: [],

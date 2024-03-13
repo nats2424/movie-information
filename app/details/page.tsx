@@ -1,13 +1,13 @@
 "use client";
 
-import PublishedMovieList from "./components/PublishedMovieList";
-import Sidebar from "./components/Sidebar";
+import PublishedMovieList from "../components/PublishedMovieList";
+import Sidebar from "../components/Sidebar";
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-import Header from "./components/header";
+import Header from "../components/header";
 
 const queryClient = new QueryClient();
 
@@ -18,10 +18,10 @@ export default function Home() {
         <Header />
 
         <div className="flex">
-          <div className="mt-33">
+          <div>
             <Sidebar />
           </div>
-          <div className="mt-33">
+          <div>
             <PublishedMovieList />
           </div>
         </div>

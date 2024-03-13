@@ -1,13 +1,6 @@
+// "use client";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-let Tmdb: string;
-
-if (typeof process.env.NEXT_PUBLIC_TMDBURL === "string") {
-  Tmdb = process.env.NEXT_PUBLIC_TMDBURL;
-} else {
-  throw new Error("NEXT_PUBLIC_TMDBURL is not defined");
-}
-
+// 取得したdataの型定義
 type FetchData = {
   adult: boolean;
   backdrop_path: string;
@@ -32,7 +25,11 @@ type FetchData = {
   release_date: Date;
   revenue: number;
   runtime: number;
-  spoken_languages: { english_name: string; iso_639_1: string; name: string }[];
+  spoken_languages: {
+    english_name: string;
+    iso_639_1: string;
+    name: string;
+  }[];
   status: string;
   tagline: string;
   title: string;
@@ -41,27 +38,14 @@ type FetchData = {
   vote_count: number;
 };
 
+const fetchInformations = async (): Promise<FetchData[]> => {
+  const response = await fetch(
+    "https://api.themoviedb.org/3/movie/550?api_key=cfe5c0a677a38bcfd0f00a92852cf5fc"
+  );
+  const data: FetchData[] = await response.json(); // dataに型をつけて配列にする。
+  return data;
+};
+
 export const useFetchData = () => {
-  const queryKey: QueryKey = ["repoData"];
-
-  const { isLoading, error, data } = useQuery({
-    queryKey,
-    queryFn: async () => {
-      const response = await fetch(Tmdb, { method: "GET" });
-      const data: FetchData = await response.json();
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      if (isLoading) {
-        return <div>Loading....</div>;
-      }
-      if (error) {
-        return <div>エラーが発生しました</div>;
-      }
-      return data;
-    },
-  });
-
-  return { data, isLoading, error };
+  return useQuery({ queryKey: ["repoData"], queryFn: fetchInformations }); // queryKeyとqueryFnはReact-Queryに必須の引数
 };
